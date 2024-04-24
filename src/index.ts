@@ -1,10 +1,13 @@
-import { AptosClient } from "aptos";
+const aptos = new Aptos(); // default to devnet
 
-const client = new AptosClient("https://fullnode.devnet.aptoslabs.com/v1");
+// with custom configuration
+const aptosConfig = new AptosConfig({ network: Network.TESTNET });
+const aptos = new Aptos(aptosConfig);
 
-async function main() {
-  const ledgerInfo = await client.getLedgerInfo();
-  console.log("Ledger version:", ledgerInfo.ledger_version);
-}
+const ledgerInfo = await aptos.getLedgerInfo();
+const modules = await aptos.getAccountModules({ accountAddress: "0x123" });
+const tokens = await aptos.getAccountOwnedTokens({ accountAddress: "0x123" });
 
-main().catch(console.error);
+// Get account balance
+const accountBalance = await aptos.getAccountBalance({ accountAddress: "0x123" });
+console.log(`Account balance: ${accountBalance}`);
